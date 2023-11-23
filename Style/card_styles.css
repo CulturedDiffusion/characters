@@ -1,0 +1,64 @@
+/* Style the container */
+.container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 90px;
+}
+
+#search-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background-color: lightpink;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+#search {
+    width: 95%;
+    border: 2px solid black;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    font-size: 32px; 
+}
+/* Style the card container */
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Style the cards */
+.card {
+    margin: 10px; 
+}
+
+
+.card-text {
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5; 
+    padding: 0px; 
+    margin: 0px; 
+    font-weight: bold;
+    vertical-align: middle;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+
+img {
+    display: block;
+    -webkit-font-smoothing: antialiased;
+    image-rendering: smooth
+}

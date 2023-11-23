@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="Bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="Style/card_styles.css">
+</head>
+<body>
+    <div class="container" id="app">
+        <div id="search-banner">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search for characters..." aria-label="Search" id="search" onkeydown="pressSearchButton(event)">
+        </div>
+        <div id="results" class="card-container"></div>
+    </div>
+
+    <script src="/Bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="Scripts/fuse.js"></script>
+    <script>
+        function pressSearchButton(event) {
+            if(event.keyCode == 13) {
+                event.target.blur();
+            }
+        }
+
+        function scrollToTop() {
+            window.scrollTo(0, 0);
+        }
+        
+        function isWideResolution() {
+            var width = window.innerWidth;
+            var height = window.innerHeight;
+
+            return width > height;
+        }
+
+        function updateCharacterCards(results) {
+            // Define your configurable values
+            //var cardHeight = "412px";
+            //var cardHeight = "100%";
+
+            var cardWidth = "31%";
+            if (isWideResolution())
+            {
+                var cardWidth = "19%";
+            }
+            var borderSize = 2; 
+            var borderColor = 'black'; 
+            var boxShadow = '2px 2px 5px rgba(0, 0, 0, 0.3)'; 
+            var fontFamily = 'Segoe UI, sans-serif'; 
+            var fontSize = '14px'; 
+            var fontSizeSeries = '12px'
+            var fontColor = 'white'; 
+            var padding = 5; 
+
+            document.getElementById('results').innerHTML = results.map(character => `
+            <a href="${character.item.PixivLink}" target="_blank" style="height: auto; width: ${cardWidth}">
+                <div class="card" style="height: auto; width: auto; border: ${borderSize}px solid ${borderColor}; box-shadow: ${boxShadow}; margin: ${padding}px;">
+                    <img src="CharacterImages/${character.item.Name}.webp" alt="${character.item.Name}" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="card-body" style="position: absolute; bottom: 0; left: 0; right: 0; font-family: ${fontFamily}; font-size: ${fontSize}; color: ${fontColor}; text-align: center; padding: 0px">
+                        <div class = "card-text">${character.item.Name}</div>
+                        <div class = "card-text" style="font-size: ${fontSizeSeries};">${character.item.Series}</div>
+                    </div>
+                </div>
+            </a>
+            `).join('');
+
+            scrollToTop()
+        }
+
+
+        // Fetch the data
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                // Initialize Fuse
+                const fuse = new Fuse(data, {
+                    keys: ['Name', 'Series']
+                });
+
+                    // Handle search
+                    document.getElementById('search').addEventListener('input', function() {
+                    let results;
+                    if (this.value) {
+                        results = fuse.search(this.value);
+                    } else {
+                        results = data.map(item => ({ item: item }));  // Wrap each item in an object to match Fuse.js format
+                    }
+                    updateCharacterCards(results);
+                });
+
+                // Call the function with all data when the page is loaded
+                updateCharacterCards(data.map(item => ({ item: item })));    
+            });
+
+    </script>
+</body>
+</html>
